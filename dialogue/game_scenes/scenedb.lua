@@ -4,6 +4,11 @@ local scenes = {}
 
 local scenenames = {
     "level_1_intro",
+    "level_2_intro",
+    "level_3_intro",
+    "level_4_intro",
+    "level_5_intro",
+    "finale",
 }
 
 function scenedb.loadAll()

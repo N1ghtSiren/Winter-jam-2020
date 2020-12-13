@@ -5,5 +5,6 @@ return {
     height = 304,
     animations = {
         idle = "content/dialogue/sani.png",
+        idle2 = "content/dialogue/sani2.png",
     },
 }

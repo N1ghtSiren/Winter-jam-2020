@@ -13,6 +13,7 @@ function setPosition(obj,x,y)
 end
 
 function setScale(obj, scale)
+    if(scale==0)then return end
     obj.xScale = scale
     obj.yScale = scale
 end

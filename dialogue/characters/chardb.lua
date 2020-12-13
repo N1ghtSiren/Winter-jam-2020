@@ -7,6 +7,8 @@ local charnames = {
     "elf",
     "sani",
     "present",
+    "grinch",
+    "townguy",
 }
 
 function chardb.loadAll()

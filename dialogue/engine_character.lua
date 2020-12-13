@@ -1,5 +1,4 @@
 character = {}
-local parentGroup = level_layers[1]
 
 local methods = {}
 methods.__index = methods
@@ -41,7 +40,7 @@ function character.new(id)
     local base = chardb.get(id)
     local obj = {
         name = base.name or "Nameless",
-        group = newGroup(parentGroup),
+        group = newGroup(level_layers[1]),
         animations = base.animations,
     }
 

@@ -7,6 +7,8 @@ require("mylib")
 require("indexer")
 require("fps")
 
+require("progress")
+
 require("dialogue.characters.chardb")
 require("dialogue.game_scenes.scenedb")
 
@@ -18,3 +20,4 @@ require("dialogue.engine_character")
 require("dialogue.engine_game_scene")
 
 composer.gotoScene("scenes.mainmenu")
+

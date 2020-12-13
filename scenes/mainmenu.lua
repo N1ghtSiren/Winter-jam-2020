@@ -1,8 +1,11 @@
 local scene = composer.newScene()
+mainMenu = scene
 local group = {}
 local objects = {}
 local flakes = {}
 local treeSpawner = nil
+
+local buttons = {}
 --[[
 layers of things
 0 - background
@@ -11,11 +14,13 @@ layers of things
 ]]
 
 function scene:create(event)
+    print("scene created")
     local sceneGroup = self.view
     local text_command_name = nil
     local text_command_1 = nil
     local text_command_2 = nil
-    local text_gameName = nil
+    local text_movies_only = nil
+    local text_movies_only_hint = nil
     local button = nil
     local garland = nil
 
@@ -24,6 +29,22 @@ function scene:create(event)
 
         if(event.target.id==0)then
             sceneLevel:level1_intro()
+
+        elseif(event.target.id==1)then
+            sceneLevel:level1_intro()
+
+        elseif(event.target.id==2)then
+            sceneLevel:level2_intro()
+
+        elseif(event.target.id==3)then
+            sceneLevel:level3_intro()
+
+        elseif(event.target.id==4)then
+            sceneLevel:level4_intro()
+
+        elseif(event.target.id==5)then
+            sceneLevel:level5_intro()
+
         end
     end
 
@@ -31,12 +52,44 @@ function scene:create(event)
         group[i] = newGroup(sceneGroup)
     end
 
-    text_command_name = display.newText(group[3], "Hat Dealers", 10, 10, fontMain, 40)
-    text_command_1 = display.newText(group[3], "N1ght Siren", 10, 80, fontMain, 30)
-    text_command_2 = display.newText(group[3], "Софи", 10, 110, fontMain, 30)
+    local function onHint(event)
+        if(event.phase~="began")then return end
 
-    text_gameName = display.newText(group[3], "Продам Гараж", 650, 10, fontMain, 70)
-    setAnchor(text_gameName, 0.5, 0)
+        if(progress.isGameCompleted())then
+            local flag = not progress.isOnlyMovies()
+            progress.setOnlyMovies(flag)
+
+            if(flag)then
+                text_movies_only.text = "Только катсцены (включено)"
+            else
+                text_movies_only.text = "Только катсцены (выкл)"
+            end
+        else
+            text_movies_only_hint.isVisible = true
+
+            timer.performWithDelay(3000, function()
+                text_movies_only_hint.isVisible = false
+            end)
+        end
+
+    end
+
+    text_movies_only_hint = display.newText(group[3], "Доступно после прохождения", 10, 110, fontMain, 20)
+    setAnchor(text_movies_only_hint, 1, 1)
+    text_movies_only_hint.x, text_movies_only_hint.y = 1270, 680
+    text_movies_only_hint.isVisible = false
+
+    text_movies_only = display.newText(group[3], "Только катсцены (выкл)", 10, 110, fontMain, 20)
+    setAnchor(text_movies_only, 1, 1)
+    text_movies_only.x, text_movies_only.y = 1270, 710
+    text_movies_only:addEventListener("touch", onHint)
+
+    text_command_name = display.newText(group[3], "Hat Dealers", 10, 110, fontMain, 40)
+    text_command_1 = display.newText(group[3], "N1ght Siren", 10, 180, fontMain, 30)
+    text_command_2 = display.newText(group[3], "Karalisas", 10, 220, fontMain, 30)
+
+    garland = display.newImageRect(group[3], "content/images/garland.png", 1280, 210)
+    garland.x, garland.y = 0, 0
 
     button = display.newImageRect(group[3], "content/images/mainmenu_button_1.png", 150, 50)
     button.x, button.y = 10, 660
@@ -45,9 +98,37 @@ function scene:create(event)
     button:addEventListener("touch", listener)
     
     group[3].alpha = 0
-    timer.performWithDelay(10000,function()
+    timer.performWithDelay(3000, function()
         transition.to(group[3], {alpha=1, time=1500, transition=easing.linear})
     end)
+
+    buttons[1] = display.newImageRect(group[3], "content/images/button_1.png", 50, 50)
+    buttons[1].x, buttons[1].y, buttons[1].isVisible, buttons[1].id = 170, 660, false, 1
+
+    buttons[2] = display.newImageRect(group[3], "content/images/button_2.png", 50, 50)
+    buttons[2].x, buttons[2].y, buttons[2].isVisible, buttons[2].id = 230, 660, false, 2
+
+    buttons[3] = display.newImageRect(group[3], "content/images/button_3.png", 50, 50)
+    buttons[3].x, buttons[3].y, buttons[3].isVisible, buttons[3].id = 290, 660, false, 3
+
+    buttons[4] = display.newImageRect(group[3], "content/images/button_4.png", 50, 50)
+    buttons[4].x, buttons[4].y, buttons[4].isVisible, buttons[4].id = 350, 660, false, 4
+
+    buttons[5] = display.newImageRect(group[3], "content/images/button_5.png", 50, 50)
+    buttons[5].x, buttons[5].y, buttons[5].isVisible, buttons[5].id = 410, 660, false, 5
+
+    for i = 1, 5 do
+        buttons[i]:addEventListener("touch", listener)
+    end
+
+    timer.performWithDelay(3000, function()
+        for i = 1, 5 do
+            if(i<=progress.getmaxlvl())then
+                buttons[i].isVisible = true
+            end
+        end
+    end)
+    
 end
 
 function scene:hide(event)
@@ -64,6 +145,12 @@ function scene:show(event)
 
     if(event.phase=="will")then
         sceneGroup.isVisible = true
+    end
+
+    for i = 1, 5 do
+        if(i<=progress.getmaxlvl())then
+            buttons[i].isVisible = true
+        end
     end
 
     self:startAnimation()
@@ -130,8 +217,8 @@ function scene:startAnimation()
     onFrame(0.016)
     indexer.add("mainmenu", onFrame)
 
-    transition.to(player, { speed = 0.6 , time=10000, transition=easing.linear})
-    timer.performWithDelay(10000, function()
+    transition.to(player, { speed = 0.6 , time=3000, transition=easing.linear})
+    timer.performWithDelay(3000, function()
         if(scene.view.isVisible==false)then return end
         for i = -5, 5 do
             transition.to(lines[i], { ey = 1500, time=15000, transition=easing.linear})
@@ -204,7 +291,7 @@ function scene:startAnimation()
         end
     end
 
-    timer.performWithDelay(11000, function()
+    timer.performWithDelay(3000, function()
         if(scene.view.isVisible==false)then return end
         indexer.add("mainmenu", onFrame)
     end)
@@ -232,6 +319,14 @@ function scene:endAnimation()
     end
             
     indexer.reset("mainmenu")
+end
+
+function scene:go()
+    if(game_scene.getCurrent())then
+        game_scene.getCurrent():destroy()
+    end
+
+    composer.gotoScene("scenes.mainmenu")
 end
 
 return scene
