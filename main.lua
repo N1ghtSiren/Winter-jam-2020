@@ -5,15 +5,16 @@ display.setDefault("anchorY", 0)
 
 require("mylib")
 require("indexer")
+require("fps")
+
+require("dialogue.characters.chardb")
+require("dialogue.game_scenes.scenedb")
 
 composer = require("composer")
 composer.loadScene("scenes.mainmenu")
 composer.loadScene("scenes.level")
 
-require("engine.game_scene")
-require("engine.character")
-
-require("characters.chardb")
-require("game_scenes.scenedb")
+require("dialogue.engine_character")
+require("dialogue.engine_game_scene")
 
 composer.gotoScene("scenes.mainmenu")

@@ -1,7 +1,7 @@
 game_scene = {}
 local parentGroup_background = level_layers[0]
-local parentGroup_text_background = level_layers[3]
-local parentGroup_text = level_layers[4]
+local parentGroup_text_background = level_layers[2]
+local parentGroup_text = level_layers[3]
 
 local currentScene = nil
 
@@ -10,8 +10,11 @@ methods.__index = methods
 
 function methods:destroy()
     self.background:removeSelf()
+    self.textbg:removeSelf()
+    self.text:removeSelf()
 
     indexer.remove("scenes", self)
+    indexer.reset("chars")
 
     if(currentScene == self)then
         currentScene = nil
@@ -25,10 +28,11 @@ function methods:showtextbg(flag)
 end
 
 function methods:setText(text)
-    self.text.text = textCutter(text, 150)
+    self.text.text = textCutter(text, 135)
 end
 
 function methods:play()
+    currentScene = self
     self:update()
 end
 
@@ -55,7 +59,7 @@ function game_scene.new(id)
 
     obj.textbg = display.newRect(parentGroup_text_background, 0, 570, 1280, 150)
     obj.textbg.isVisible = true
-    obj.textbg:setFillColor(0.1, 0.3, 0.1, 0.4)
+    obj.textbg:setFillColor(0.3, 0.3, 0.3, 0.4)
     obj.textbg:addEventListener("touch", ontouch)
 
     obj.text = display.newText(parentGroup_text, "Тестовый диалог", 10, 580, fontMain, 30)

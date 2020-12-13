@@ -26,6 +26,13 @@ function methods:move(newx, newy)
     self.image.y = newy
 end
 
+function methods:jump()
+    transition.to(self.image, { y=150, time=100, transition=easing.inOutBounce})
+    timer.performWithDelay(100,function()
+        transition.to(self.image, { y = 200, time=100, transition=easing.linear})
+    end)
+end
+
 function methods:setAnimation(animationName)
     self.image.fill = {type = "image", filename = self.animations[animationName]}
 end

@@ -3,7 +3,7 @@ scenedb = {}
 local scenes = {}
 
 local scenenames = {
-    "scene1",
+    "level_1_intro",
 }
 
 function scenedb.loadAll()
@@ -11,7 +11,7 @@ function scenedb.loadAll()
     local maxn = #scenenames
 
     for _,id in ipairs(scenenames) do
-        scenes[id] = require("game_scenes."..id)
+        scenes[id] = require("dialogue.game_scenes."..id)
         print("scenes loaded: "..id.." | "..n.."/"..maxn)
         n = n + 1
     end

@@ -43,10 +43,8 @@ function indexer.size(str)
 end
 
 function indexer.reset(str)
-    for k, _ in pairs(id[str]) do
-        for _, v in pairs(id[k].content)do
-            indexer.rm(k, v)
-        end
+    for _, v in pairs(id[str].content)do
+        indexer.remove(str, v)
     end
 end
 
@@ -57,5 +55,9 @@ function indexer.inside(str,thing)
     return false
 end
 
-indexer.new("chars")
+indexer.new("mainmenu")
+indexer.new("level1")
+
+--
 indexer.new("scenes")
+indexer.new("chars")

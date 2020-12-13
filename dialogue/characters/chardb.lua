@@ -3,7 +3,10 @@ chardb = {}
 local chars = {}
 
 local charnames = {
-    "testchar",
+    "santa",
+    "elf",
+    "sani",
+    "present",
 }
 
 function chardb.loadAll()
@@ -11,7 +14,7 @@ function chardb.loadAll()
     local maxn = #charnames
 
     for _,id in ipairs(charnames) do
-        chars[id] = require("characters."..id)
+        chars[id] = require("dialogue.characters."..id)
         print("chars loaded: "..id.." | "..n.."/"..maxn)
         n = n + 1
     end
